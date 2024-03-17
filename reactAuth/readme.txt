@@ -1,0 +1,1 @@
+"rafce" is the shortcut to create react functional component
