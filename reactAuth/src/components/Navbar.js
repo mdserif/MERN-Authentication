@@ -1,8 +1,10 @@
 import React from 'react'
 import {AppBar,Box,Toolbar,Typography,Button} from '@mui/material'
 import { NavLink } from 'react-router-dom'
+import { getToken } from '../services/LocalStorageService';
 
 const Navbar = () => {
+  const token = getToken('token')
   return (
     <>
       <Box sx={{flexGrow:1}}>
@@ -11,9 +13,12 @@ const Navbar = () => {
             <Typography varient='h5' component='div' sx={{flexGrow:1}}>
               Geek-Shop
             </Typography>
+            
             <Button component={NavLink} to='/' style={({isActive})=>{return{backgroundColor:isActive? '#6d1b7b':''}}} sx={{color:'white',textTransform:'none'}}> Home </Button>
             <Button component={NavLink} to='/Contact' style={({isActive})=>{return{backgroundColor:isActive? '#6d1b7b':''}}} sx={{color:'white',textTransform:'none'}}> Contact </Button>
-            <Button component={NavLink} to="/Login" style={({isActive})=>{return{backgroundColor:isActive? '#6d1b7b':''}}} sx={{color:'white',textTransform:'none'}}> Login/Registration </Button>
+            
+            {token? <Button component={NavLink} to="/dashboard" style={({isActive})=>{return{backgroundColor:isActive? '#6d1b7b':''}}} sx={{color:'white',textTransform:'none'}}> Dashboard </Button>: <Button component={NavLink} to="/Login" style={({isActive})=>{return{backgroundColor:isActive? '#6d1b7b':''}}} sx={{color:'white',textTransform:'none'}}> Login/Registration </Button>}
+           
           </Toolbar>
         </AppBar>
       </Box>

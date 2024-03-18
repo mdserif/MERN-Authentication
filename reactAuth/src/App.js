@@ -17,7 +17,7 @@ function App() {
             <Route path="contact" element={<Contact/>}/>
             <Route path="login" element={<LoginReg />}/>
             <Route path="sendpasswordresetemail" element={<SendPasswordResetEmail />}/>
-            <Route path='reset' element={<ResetPassword />}/>
+            <Route path='api/user/reset/:id/:token' element={<ResetPassword />}/>
           </Route>
           <Route path='/dashboard' element={<Dashboard/>}/>
           <Route path='*' element={<h1> Error!! 404 Page Not Found. </h1>}/>

@@ -30,10 +30,23 @@ export const userAuthApi = createApi({
                 }
             }
         }
+    }),
+
+    sendPasswordResetEmail: builder.mutation({
+      query:(user)=>{
+          return{
+              url: 'send-reset-password-email',
+              method: 'POST',
+              body : user,
+              headers:{
+                  'content-type':'application/json'
+              }
+          }
+      }
     })
   }),
 })
 
-export const { useUserRegistrationMutation, useUserLoginMutation } = userAuthApi
+export const { useUserRegistrationMutation, useUserLoginMutation, useSendPasswordResetEmailMutation } = userAuthApi
 
 // base url is the backend base url 

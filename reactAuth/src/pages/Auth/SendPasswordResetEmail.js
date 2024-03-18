@@ -1,21 +1,30 @@
 import { Grid, TextField, Button, Box, Alert } from "@mui/material";
 import { useState } from 'react';
+import { useSendPasswordResetEmailMutation } from "../../services/userAuthApi";
+
 const SendPasswordResetEmail = () => {
   const [error, setError] = useState({
     status: false,
     msg: "",
     type: ""
   })
-  const handleSubmit = (e) => {
+  const [sendPasswordResetEmail]= useSendPasswordResetEmailMutation()
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const actualData = {
       email: data.get('email'),
     }
     if (actualData.email) {
-      console.log(actualData);
-      document.getElementById('password-reset-email-form').reset()
-      setError({ status: true, msg: "Password Reset Email Sent. Check Your Email !!", type: 'success' })
+      const res = await sendPasswordResetEmail(actualData)
+      if(res.data.status === "success"){
+        document.getElementById('password-reset-email-form').reset()
+        setError({ status: true, msg: "Password Reset Email Sent. Check Your Email !!", type: 'success' })
+      }
+      if(res.data.status ===  "failed"){
+        document.getElementById('password-reset-email-form').reset()
+        setError({ status: true, msg: res.data.message , type: 'error' })
+      }
     } else {
       setError({ status: true, msg: "Please Provide Valid Email", type: 'error' })
     }

@@ -2,6 +2,7 @@ import { TextField,Button,Box,Alert, CircularProgress } from "@mui/material";
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useUserLoginMutation } from "../../services/userAuthApi";
+import { storeToken } from "../../services/LocalStorageService";
 
 
 const UserLogin = () => {
@@ -22,7 +23,8 @@ const UserLogin = () => {
     if (actualData.email && actualData.password) {
       const res= await userLogin(actualData)
       if (res.data.status ==='success'){
-        // store token
+        // store token in localstorage
+        storeToken(res.data.token)
         navigate('/dashboard')
       }
       if(res.data.status==='failed'){

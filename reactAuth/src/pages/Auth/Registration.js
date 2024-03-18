@@ -2,6 +2,7 @@ import { TextField, FormControlLabel, Checkbox, Button, Box, Alert } from '@mui/
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserRegistrationMutation } from '../../services/userAuthApi';
+import { storeToken } from '../../services/LocalStorageService';
 
 
 const Registration = () => {
@@ -26,7 +27,8 @@ const Registration = () => {
       if (actualData.password === actualData.password_confirmation) {
         const res=await userRegistration(actualData)
         if (res.data.status ==='success'){
-          // store token
+          // store token in localstorage
+          storeToken(res.data.token)
           navigate('/dashboard')
         }
         if(res.data.status==='failed'){

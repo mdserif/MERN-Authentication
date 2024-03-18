@@ -105,13 +105,14 @@ class UserController{
             const link = `http://127.0.0.1:3000/api/user/reset/${user._id}/${token}`
             console.log(link)
 
-             // Send Email
+            //  Send Email
             let info = await transporter.sendMail({
               from: process.env.EMAIL_FROM,
               to: user.email,
               subject: "Password Reset Link",
               html: `<a href=${link}>Click Here</a> to Reset Your Password`
             })
+            
             res.send({ "status": "success", "message": "Password Reset Email Sent... Please Check Your Email" ,'info':info})
           } else {
             res.send({ "status": "failed", "message": "Email doesn't exists" })
