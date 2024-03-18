@@ -43,10 +43,48 @@ export const userAuthApi = createApi({
               }
           }
       }
+    }),
+
+    resetPassword: builder.mutation({
+      query:({actualData,id,token})=>{
+          return{
+              url: `/reset-password/${id}/${token}`,
+              method: 'POST',
+              body : actualData,
+              headers:{
+                  'content-type':'application/json'
+              }
+          }
+      }
+    }),
+
+    getLoggedUser: builder.query({
+      query:(token)=>{
+          return{
+              url: 'loggeduser',
+              method: 'GET',
+              headers:{
+                  'authorization' : `Bearer ${token}`
+              }
+          }
+      }
+    }),
+
+    changeUserPassword: builder.mutation({
+      query:({actualData, token})=>{
+          return{
+              url: 'changepassword',
+              method: 'POST',
+              body: actualData,
+              headers:{
+                  'authorization' : `Bearer ${token}`
+              }
+          }
+      }
     })
   }),
 })
 
-export const { useUserRegistrationMutation, useUserLoginMutation, useSendPasswordResetEmailMutation } = userAuthApi
+export const { useUserRegistrationMutation, useUserLoginMutation, useSendPasswordResetEmailMutation,useResetPasswordMutation, useGetLoggedUserQuery, useChangeUserPasswordMutation} = userAuthApi
 
-// base url is the backend base url 
+// base url is the backend base url , endpoints are also backend urls

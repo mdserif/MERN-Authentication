@@ -1,6 +1,8 @@
 import { Grid, TextField, Button, Box, Alert } from "@mui/material";
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useResetPasswordMutation } from "../../services/userAuthApi";
+
 const ResetPassword = () => {
   const navigate = useNavigate()
   const [error, setError] = useState({
@@ -8,7 +10,11 @@ const ResetPassword = () => {
     msg: "",
     type: ""
   })
-  const handleSubmit = (e) => {
+
+  const [resetPassword]=useResetPasswordMutation()
+  const {id,token}=useParams() // useparams have all the data present in the url
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const actualData = {
@@ -17,12 +23,18 @@ const ResetPassword = () => {
     }
     if (actualData.password && actualData.password_confirmation) {
       if (actualData.password === actualData.password_confirmation) {
-        console.log(actualData);
-        document.getElementById('password-reset-form').reset()
-        setError({ status: true, msg: "Password Reset Successfully. Redirecting to Login Page...", type: 'success' })
-        setTimeout(() => {
-          navigate("/login")
-        }, 3000)
+        const res = await resetPassword({actualData,id,token})
+        // console.log(res)
+        if(res.data.status === 'success'){
+          document.getElementById('password-reset-form').reset()
+          setError({ status: true, msg: "Password Reset Successfully. Redirecting to Login Page...", type: 'success' })
+          setTimeout(() => {
+            navigate("/login")
+          }, 3000)
+        }
+        if(res.data.status === 'failed'){
+          setError({ status: true, msg: res.data.message, type: 'error' })
+        }
       } else {
         setError({ status: true, msg: "Password and Confirm Password Doesn't Match", type: 'error' })
       }
